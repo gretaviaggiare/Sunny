@@ -36,9 +36,9 @@ jobs:
           mv dist/SunnyCars dist/SunnyCars-mac
 
       - name: Rename Windows binary
-        if: runner.os == 'Windows'
-        run: |
-          rename dist\SunnyCars.exe SunnyCars-win.exe
+  	if: runner.os == 'Windows'
+  	run: |
+    	  Rename-Item "dist/SunnyCars.exe" "SunnyCars-win.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
