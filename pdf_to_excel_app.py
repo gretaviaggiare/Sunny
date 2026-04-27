@@ -245,7 +245,7 @@ def process_files(files):
     output_path = os.path.join(
         os.path.expanduser("~"),
         "Desktop",
-        "prenotazi_sunny.xlsx"
+        "prenotazioni_sunny.xlsx"
     )
 
     try:
@@ -253,13 +253,13 @@ def process_files(files):
     except PermissionError:
         messagebox.showerror(
             "Errore",
-            "Chiudi il file 'prenotazi_sunny.xlsx' prima di salvare."
+            "Chiudi il file 'prenotazioni_sunny.xlsx' prima di salvare."
         )
         return
 
     messagebox.showinfo(
         "Operazione completata",
-        "File salvato sul Desktop:\nprenotazi_sunny.xlsx\n\n(Il file è stato aggiornato se già esistente)"
+        "File salvato sul Desktop:\nprenotazioni_sunny.xlsx\n\n(Il file è stato aggiornato se già esistente)"
     )
 
 
