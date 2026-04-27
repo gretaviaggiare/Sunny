@@ -26,22 +26,32 @@ jobs:
         run: |
           pip install pyinstaller pdfplumber pandas openpyxl
 
-      - name: Build app
+      # 🔹 BUILD WINDOWS
+      - name: Build Windows
+        if: runner.os == 'Windows'
         run: |
-          pyinstaller --onefile --windowed --name SunnyCars pdf_to_excel_app.py
+          pyinstaller --onefile --windowed --name SunnyCars-win pdf_to_excel_app.py
 
-      - name: Rename Mac binary
+      # 🔹 BUILD MAC
+      - name: Build Mac
         if: runner.os == 'macOS'
         run: |
-          mv dist/SunnyCars dist/SunnyCars-mac
+          pyinstaller --onefile --windowed --name SunnyCars-mac pdf_to_excel_app.py
 
-      - name: Rename Windows binary
-  	if: runner.os == 'Windows'
-  	run: |
-          Rename-Item "dist/SunnyCars.exe" "SunnyCars-win.exe"
+      # 🔹 CREA DMG (solo Mac)
+      - name: Create DMG
+        if: runner.os == 'macOS'
+        run: |
+          mkdir dmg
+          cp dist/SunnyCars-mac dmg/
+          hdiutil create -volname SunnyCars -srcfolder dmg -ov -format UDZO SunnyCars.dmg
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      # 🔹 UPLOAD SU RELEASE
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: SunnyCars-${{ runner.os }}
-          path: dist/*
+          files: |
+            dist/*
+            SunnyCars.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
