@@ -38,7 +38,7 @@ jobs:
       - name: Rename Windows binary
   	if: runner.os == 'Windows'
   	run: |
-    	  Rename-Item "dist/SunnyCars.exe" "SunnyCars-win.exe"
+          Rename-Item "dist/SunnyCars.exe" "SunnyCars-win.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
