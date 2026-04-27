@@ -1,0 +1,47 @@
+name: Build SunnyCars App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller pdfplumber pandas openpyxl
+
+      - name: Build app
+        run: |
+          pyinstaller --onefile --windowed --name SunnyCars pdf_to_excel_app.py
+
+      - name: Rename Mac binary
+        if: runner.os == 'macOS'
+        run: |
+          mv dist/SunnyCars dist/SunnyCars-mac
+
+      - name: Rename Windows binary
+        if: runner.os == 'Windows'
+        run: |
+          rename dist\SunnyCars.exe SunnyCars-win.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SunnyCars-${{ runner.os }}
+          path: dist/*
