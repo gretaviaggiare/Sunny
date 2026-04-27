@@ -29,17 +29,25 @@ jobs:
         run: |
           pip install pyinstaller pdfplumber pandas openpyxl
 
-      # 🔹 BUILD WINDOWS (.exe con icona)
+      # 🔹 BUILD WINDOWS (.exe con icona + template)
       - name: Build Windows
         if: runner.os == 'Windows'
         run: |
-          pyinstaller --onefile --windowed --name SunnyCars-win --icon=Icon.ico pdf_to_excel_app.py
+          pyinstaller --onefile --windowed ^
+            --name SunnyCars ^
+            --icon=Icon.ico ^
+            --add-data "import prenotazioni_MASTER - ALL INCLUSIVE PRODUCT SUNNY CARS.xlsx;." ^
+            pdf_to_excel_app.py
 
-      # 🔹 BUILD MAC (.app con icona)
+      # 🔹 BUILD MAC (.app con icona + template)
       - name: Build Mac App
         if: runner.os == 'macOS'
         run: |
-          pyinstaller --windowed --name SunnyCars --icon=icon.icns pdf_to_excel_app.py
+          pyinstaller --windowed \
+            --name SunnyCars \
+            --icon=icon.icns \
+            --add-data "import prenotazioni_MASTER - ALL INCLUSIVE PRODUCT SUNNY CARS.xlsx:." \
+            pdf_to_excel_app.py
 
       # 🔹 CREA DMG INSTALLABILE (drag & drop)
       - name: Create DMG
