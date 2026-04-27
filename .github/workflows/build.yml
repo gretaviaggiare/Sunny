@@ -29,25 +29,29 @@ jobs:
         run: |
           pip install pyinstaller pdfplumber pandas openpyxl
 
-      # 🔹 BUILD WINDOWS
+      # 🔹 BUILD WINDOWS (.exe con icona)
       - name: Build Windows
         if: runner.os == 'Windows'
         run: |
-          pyinstaller --onefile --windowed --name SunnyCars-win pdf_to_excel_app.py
+          pyinstaller --onefile --windowed --name SunnyCars-win --icon=Icon.ico pdf_to_excel_app.py
 
-      # 🔹 BUILD MAC
-      - name: Build Mac
+      # 🔹 BUILD MAC (.app con icona)
+      - name: Build Mac App
         if: runner.os == 'macOS'
         run: |
-          pyinstaller --onefile --windowed --name SunnyCars-mac pdf_to_excel_app.py
+          pyinstaller --windowed --name SunnyCars --icon=icon.icns pdf_to_excel_app.py
 
-      # 🔹 CREA DMG (solo Mac)
+      # 🔹 CREA DMG INSTALLABILE (drag & drop)
       - name: Create DMG
         if: runner.os == 'macOS'
         run: |
           mkdir dmg
-          cp dist/SunnyCars-mac dmg/
-          hdiutil create -volname SunnyCars -srcfolder dmg -ov -format UDZO SunnyCars.dmg
+          cp -R dist/SunnyCars.app dmg/
+          ln -s /Applications dmg/Applications
+
+          hdiutil create -volname "SunnyCars" \
+            -srcfolder dmg \
+            -ov -format UDZO SunnyCars.dmg
 
       # 🔹 UPLOAD SU RELEASE
       - name: Upload Release
