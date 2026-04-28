@@ -135,7 +135,7 @@ def extract_reservation(text):
         fonte_fix = "_TO-SunnyCars ALL INCLUSIVE Prepaid"
 
     return {
-        "Reservation Status": "NEW",
+        "Reservation Status": "MOD",
         "Broker reservation number": targetrent,
         "Targetrent number": targetrent,
         "Station pick-up": pickup,
@@ -193,7 +193,7 @@ def process_files(files):
                 if not text:
                     continue
 
-                blocks = re.split(r"\bRESERVATION\b", text)
+                blocks = re.split(r"\bRESERVAT\w*\.?\b", text)
 
                 for block in blocks[1:]:  # skip header
 
