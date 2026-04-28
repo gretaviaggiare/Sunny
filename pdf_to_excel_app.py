@@ -5,6 +5,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import sys
 import os
+import platform
+
 
 def resource_path(relative_path):
     try:
@@ -242,11 +244,20 @@ def process_files(files):
     # -------------------------
     # SALVA FILE
     # -------------------------
-    output_path = os.path.join(
-        os.path.expanduser("~"),
-        "Desktop",
-        "prenotazioni_sunny.xlsx"
-    )
+
+    if getattr(sys, 'frozen', False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    if platform.system() == "Windows":
+        output_path = os.path.join(base_dir, "prenotazioni_sunny.xlsx")
+    else:
+        output_path = os.path.join(
+            os.path.expanduser("~"),
+            "Desktop",
+            "prenotazioni_sunny.xlsx"
+        )
 
     try:
         final_df.to_excel(output_path, index=False)
